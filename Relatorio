@@ -1,0 +1,101 @@
+ Relatório 1 
+SELECT e.nome AS Nome_Empregado, e.cpf AS CPF_Empregado, e.data_admissao, e.salario,  
+d.nome AS Departamento, e.num_telefone AS Numero_Telefone 
+FROM empregado e 
+JOIN departamento d ON e.departamento_id = d.id 
+WHERE e.data_admissao BETWEEN '2019-01-01' AND '2022-03-31' 
+ORDER BY e.data_admissao DESC; 
+
+Relatório 2 
+SELECT e.nome AS Nome_Empregado, e.cpf AS CPF_Empregado, e.data_admissao, e.salario,  
+d.nome AS Departamento, e.num_telefone AS Numero_Telefone 
+FROM empregado e 
+JOIN departamento d ON e.departamento_id = d.id 
+WHERE e.salario < (SELECT AVG(salario) FROM empregado) 
+ORDER BY e.nome; 
+
+Relatório 3 
+SELECT d.nome AS Departamento, COUNT(e.id) AS Quantidade_Empregados,  
+AVG(e.salario) AS Media_Salarial, AVG(e.comissao) AS Media_Comissao 
+FROM departamento d 
+JOIN empregado e ON e.departamento_id = d.id 
+GROUP BY d.nome 
+ORDER BY d.nome; 
+
+Relatório 4 
+SELECT e.nome AS Nome_Empregado, e.cpf AS CPF_Empregado, e.sexo, e.salario,  
+COUNT(v.id) AS Quantidade_Vendas, SUM(v.valor_total) AS Total_Valor_Vendido,  
+SUM(v.comissao) AS Total_Comissao 
+FROM empregado e 
+JOIN venda v ON e.id = v.empregado_id 
+GROUP BY e.nome, e.cpf, e.sexo, e.salario 
+ORDER BY Quantidade_Vendas DESC; 
+
+Relatório 5 
+SELECT e.nome AS Nome_Empregado, e.cpf AS CPF_Empregado, e.sexo, e.salario,  
+COUNT(v.id) AS Quantidade_Vendas_com_Servico,  
+SUM(s.valor) AS Total_Valor_Vendido_com_Servico,  
+SUM(v.comissao) AS Total_Comissao_com_Servico 
+FROM empregado e 
+JOIN venda v ON e.id = v.empregado_id 
+JOIN servico_venda sv ON v.id = sv.venda_id 
+JOIN servico s ON sv.servico_id = s.id 
+GROUP BY e.nome, e.cpf, e.sexo, e.salario 
+ORDER BY Quantidade_Vendas_com_Servico DESC; 
+
+Relatório 6 
+SELECT p.nome AS Nome_Pet, s.data_servico, s.nome AS Nome_Servico, sv.quantidade,  
+sv.valor, e.nome AS Empregado_Realizador 
+FROM pet p 
+JOIN servico_venda sv ON p.id = sv.pet_id 
+JOIN servico s ON sv.servico_id = s.id 
+JOIN empregado e ON sv.empregado_id = e.id 
+ORDER BY s.data_servico DESC; 
+
+Relatório 7 
+SELECT v.data_venda, v.valor, v.desconto, (v.valor - v.desconto) AS Valor_Final,  
+e.nome AS Empregado_Realizador 
+FROM venda v 
+JOIN cliente c ON v.cliente_id = c.id 
+JOIN empregado e ON v.empregado_id = e.id
+ORDER BY v.data_venda DESC;
+
+Relatório 8 
+SELECT s.nome AS Nome_Servico, COUNT(sv.id) AS Quantidade_Vendas, SUM(sv.valor) AS 
+Total_Valor_Vendido 
+FROM servico s 
+JOIN servico_venda sv ON s.id = sv.servico_id 
+GROUP BY s.nome 
+ORDER BY Quantidade_Vendas DESC 
+LIMIT 10; 
+
+Relatório 9 
+SELECT f.tipo_pagamento, COUNT(v.id) AS Quantidade_Vendas, SUM(v.valor) AS 
+Total_Valor_Vendido 
+FROM venda v 
+JOIN forma_pagamento f ON v.forma_pagamento_id = f.id 
+GROUP BY f.tipo_pagamento 
+ORDER BY Quantidade_Vendas DESC; 
+
+Relatório 10 
+SELECT v.data_venda, COUNT(v.id) AS Quantidade_Vendas, SUM(v.valor) AS 
+Valor_Total_Venda 
+FROM venda v 
+GROUP BY v.data_venda 
+ORDER BY v.data_venda DESC; 
+
+Relatório 11 
+SELECT p.nome AS Nome_Produto, p.valor AS Valor_Produto, p.categoria,  
+f.nome AS Nome_Fornecedor, f.email AS Email_Fornecedor, f.telefone AS 
+Telefone_Fornecedor 
+FROM produto p 
+JOIN fornecedor f ON p.fornecedor_id = f.id 
+ORDER BY p.nome; 
+
+ Relatório 12 
+SELECT p.nome AS Nome_Produto, COUNT(vp.id) AS Quantidade_Total_Vendas,  
+SUM(vp.valor_vendido) AS Valor_Total_Recebido 
+FROM produto p 
+JOIN venda_produto vp ON p.id = vp.produto_id 
+GROUP BY p.nome 
+ORDER BY Quantidade_Total_Vendas DESC;
