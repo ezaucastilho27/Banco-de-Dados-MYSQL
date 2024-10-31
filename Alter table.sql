@@ -1,0 +1,8 @@
+
+ALTER TABLE Livro ADD COLUMN Preco DECIMAL(10, 2);
+
+
+ALTER TABLE Livro MODIFY COLUMN NumeroPaginas SMALLINT;
+
+
+ALTER TABLE Exemplar DROP COLUMN Localizacao;
